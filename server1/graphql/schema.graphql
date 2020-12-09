@@ -1,0 +1,27 @@
+type User {
+  username: String!
+  password: String!
+  id: ID!
+}
+
+type Token {
+  value: String!
+}
+
+  type Query {
+    me: User
+    userCount: Int!
+
+  }
+  type Mutation {
+    createUser(
+    username: String!
+  ): User
+  login(
+    username: String!
+    password: String!
+  ): Token
+
+    type Subscription {
+    userOnline: User!
+} 
