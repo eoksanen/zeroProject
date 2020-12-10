@@ -34,4 +34,4 @@ const Mutation = {
     }
 }
 
-export { Mutation as default }
+module.exports = Mutation
