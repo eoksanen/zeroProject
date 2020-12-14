@@ -21,7 +21,4 @@ type Token {
     username: String!
     password: String!
   ): Token
-
-    type Subscription {
-    userOnline: User!
-} 
+  }

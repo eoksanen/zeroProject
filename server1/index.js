@@ -5,12 +5,15 @@ const jwt = require('jsonwebtoken')
 const User = require('./models/user')
 const config = require('./utils/config')
 const bcrypt = require('bcrypt')
+const requireGraphQLFile = require('require-graphql-file')
 
 const Mutation = require('./resolvers/Mutation')
 const Query = require('./resolvers/Query')
+const typeD = requireGraphQLFile('./graphql/schema')
 
 // import { Query } from './resolvers/Query'
 // import Mutation from './resolvers/Mutation'
+
 
 console.log(process.env.MONGODB_URI)
 
@@ -25,10 +28,12 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true,
   .catch((error) => {
     console.log('error connection to MongoDB:', error.message)
   })
-const typeDefs = require('./graphql/schema')
+
+
+console.log(typeD)
 
 const server = new ApolloServer({
-    typeDefs: typeDefs,
+    typeDefs: typeD,
     resolvers: {
         Query,
         Mutation
