@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
     minlength: 3
   },
   name: String,
-  favoriteGenre: String
+  passwordHash: String,
  // passwordHash: String,
   
 })

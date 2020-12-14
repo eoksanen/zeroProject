@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const User = require('./models/user')
 const config = require('./utils/config')
-const bcrypt = require('bcrypt')
+
 const requireGraphQLFile = require('require-graphql-file')
 
 const Mutation = require('./resolvers/Mutation')

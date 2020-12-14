@@ -1,6 +1,7 @@
 type User {
   username: String!
-  password: String!
+  name: String
+  passwordHash: String!
   id: ID!
 }
 
@@ -16,6 +17,8 @@ type Token {
   type Mutation {
     createUser(
     username: String!
+    name: String
+    password: String!
   ): User
   login(
     username: String!
