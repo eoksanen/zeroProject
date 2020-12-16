@@ -29,7 +29,7 @@ const LoginForm = ({ setError, setToken, setUser, show, setPage }) => {
       console.log('MEEEEE ', getMe() )
       
       
-      localStorage.setItem('books-user-token', token)
+      localStorage.setItem('zero-user-token', token)
       // setPage('recommendations')
       
     }

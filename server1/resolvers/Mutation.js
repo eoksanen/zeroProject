@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
+const { AuthenticationError } = require('apollo-server')
 
 const Mutation = {
     createUser: async (root, args, {currentUser} ) => {

@@ -10,18 +10,18 @@ export const LOGIN = gql`
 
 export const CREATE_USER = gql`
 mutation createUser($username: String!, $name: String!, $password: String! ) {
-    addUser (
+  createUser (
         username: $username,
         name: $name,
-        password: $published
+        password: $password
     ){ ...UserDetails
   }
 }
 
-fragment UserDetails on Book {
+fragment UserDetails on User {
         username
         name
-        password
+        passwordHash
 
   }
 `

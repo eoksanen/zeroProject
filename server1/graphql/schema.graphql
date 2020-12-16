@@ -12,7 +12,7 @@ type Token {
   type Query {
     me: User
     userCount: Int!
-
+    allUsers: [User]
   }
   type Mutation {
     createUser(

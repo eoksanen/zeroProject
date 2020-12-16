@@ -10,7 +10,7 @@ import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache, split } from '@a
 //import { getMainDefinition } from '@apollo/client/utilities'
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('books-user-token')
+  const token = localStorage.getItem('zero-user-token')
   console.log('TOKEN ', token)
   return {
     headers: {
@@ -19,12 +19,11 @@ const authLink = setContext((_, { headers }) => {
     }
   }
 })
+const httpLink = new HttpLink({ uri: 'http://localhost:4000' })
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: new HttpLink({
-    uri: 'http://localhost:4000',
-  })
+  link: authLink.concat(httpLink)
 })
 
 ReactDOM.render(

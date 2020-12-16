@@ -4,7 +4,8 @@
   "description": "apollo graphql server",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js --ext js, graphql --exec babel-node",
+    "start": "nodemon index.js --ext js, graphql, json --exec node",
+    "babel": "nodemon index.js -e js, graphql --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "eio",
@@ -19,6 +20,9 @@
     "require-graphql-file": "^1.0.1"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0"
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.6"
   }
 }
