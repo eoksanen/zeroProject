@@ -73,7 +73,7 @@ function App() {
       />
 
       <LoginForm
-        show={page === 'login'}
+        show={page === 'login' && !token}
         setError={notify}
         setToken={setToken}
         setPage={setPage}

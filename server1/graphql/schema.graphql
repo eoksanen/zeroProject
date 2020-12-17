@@ -9,12 +9,13 @@ type Token {
   value: String!
 }
 
-  type Query {
+type Query {
     me: User
     userCount: Int!
     allUsers: [User]
   }
-  type Mutation {
+
+type Mutation {
     createUser(
     username: String!
     name: String
@@ -24,4 +25,8 @@ type Token {
     username: String!
     password: String!
   ): Token
+}
+type Subscription {
+    userAdded: User!
   }
+

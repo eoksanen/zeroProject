@@ -13,7 +13,7 @@ const UserForm = (props) => {
   const [ createUser ] = useMutation(CREATE_USER, {
     // refetchQueries: [ { query: ALL_USERS } ],
     onError: (error) => {
-        props.setError(error.graphQLErrors[0] ? error.graphQLErrors[0].message :'something went wrong')
+        props.setError(error.graphQLErrors[0] ? error.graphQLErrors[0].message : null)
     },
     
     update: (store, response) => {

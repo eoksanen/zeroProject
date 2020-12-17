@@ -26,7 +26,7 @@ const LoginForm = ({ setError, setToken, setUser, show, setPage }) => {
       const token = result.data.login.value
       setToken(token)
      // window.location.reload(true)
-      console.log('MEEEEE ', getMe() )
+      console.log('ME', getMe() )
       
       
       localStorage.setItem('zero-user-token', token)

@@ -1,7 +1,10 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
-const { AuthenticationError } = require('apollo-server')
+const { AuthenticationError, PubSub } = require('apollo-server')
+
+const pubsub = new PubSub()
+
 
 const Mutation = {
     createUser: async (root, args, {currentUser} ) => {
@@ -10,7 +13,6 @@ const Mutation = {
           throw new AuthenticationError("not authenticated")
         }
         console.log('user', currentUser)
-
         
       if (!args.password || args.password.length < 4){
 
@@ -29,12 +31,14 @@ const Mutation = {
           name: args.name,
           passwordHash,
         })
-        return user.save()
-        .catch(error => {
-          throw new UserInputError(error.message, {
-            invalidArgs: args,
+        user.save()
+          .catch(error => {
+            throw new UserInputError(error.message, {
+              invalidArgs: args,
+            })
           })
-        })
+        pubsub.publish('USER_ADDED', { userAdded: user })
+        return user
   
       },
       login: async ( root, args ) => {
@@ -49,14 +53,19 @@ const Mutation = {
       if (!(user && passwordCorrect)) {
           throw new UserInputError("wrong credentials")
         }
-  
         
       const userForToken = {
         username: user.username,
         id: user._id,
       }
       return { value: jwt.sign(userForToken, process.env.SECRET) }
-    }
+    },
 }
-
+/*
+const Subscription = {
+  userAdded: {
+    subscribe: () => pubsub.asyncIterator(['USER_ADDED'])
+  }
+}
+*/
 module.exports = Mutation

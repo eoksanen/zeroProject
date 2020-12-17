@@ -7,6 +7,7 @@ const config = require('./utils/config')
 
 const requireGraphQLFile = require('require-graphql-file')
 
+const Subscription = require('./resolvers/Subscription')
 const Mutation = require('./resolvers/Mutation')
 const Query = require('./resolvers/Query')
 const typeD = requireGraphQLFile('./graphql/schema')
@@ -36,7 +37,8 @@ const server = new ApolloServer({
     typeDefs: typeD,
     resolvers: {
         Query,
-        Mutation
+        Mutation,
+        Subscription
     },
     context: async ({ req }) => {
       const auth = req ? req.headers.authorization : null
