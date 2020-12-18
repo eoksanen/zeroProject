@@ -10,6 +10,7 @@ const requireGraphQLFile = require('require-graphql-file')
 const Subscription = require('./resolvers/Subscription')
 const Mutation = require('./resolvers/Mutation')
 const Query = require('./resolvers/Query')
+const resolvers = require('./resolvers/resolvers')
 const typeD = requireGraphQLFile('./graphql/schema')
 
 // import { Query } from './resolvers/Query'
@@ -35,11 +36,7 @@ console.log(typeD)
 
 const server = new ApolloServer({
     typeDefs: typeD,
-    resolvers: {
-        Query,
-        Mutation,
-        Subscription
-    },
+    resolvers,
     context: async ({ req }) => {
       const auth = req ? req.headers.authorization : null
       if (auth && auth.toLowerCase().startsWith('bearer ')) {
