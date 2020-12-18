@@ -1,18 +1,16 @@
-export const BOOK_ADDED = gql`
+import { gql  } from '@apollo/client'
+
+export const USER_ADDED = gql`
   subscription {
-    bookAdded {
-      ...BookDetails
+    userAdded {
+      ...UserDetails
     }
   }
   
   
-  fragment BookDetails on Book {
-    title
-      author {
+  fragment UserDetails on User {
+        username
         name
-        born
-      }
-      published
-      genres
+        passwordHash
   }
 `

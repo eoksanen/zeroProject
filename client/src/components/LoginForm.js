@@ -38,7 +38,7 @@ const LoginForm = ({ setError, setToken, setUser, show, setPage }) => {
   useEffect(() => {
 
       if (meResult.data) {
-        setUser(meResult.data)
+        //setUser(meResult.data)
       }
     }, [meResult])
 

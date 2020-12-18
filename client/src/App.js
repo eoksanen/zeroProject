@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import LoginForm from './components/LoginForm'
-import { useQuery, useApolloClient  } from '@apollo/client'
+import { useQuery, useApolloClient, useSubscription, updateCacheWith } from '@apollo/client'
 import Notify from './components/Notify'
 import Users from './components/Users'
 import UserForm from './components/UserForm'
 import { ALL_USERS } from './queries/query'
+import { USER_ADDED } from './queries/subscription'
 
 import './App.css';
 
@@ -32,16 +33,16 @@ function App() {
       setErrorMessage(null)
     }, 10000)
   }
-/*
-  useSubscription(BOOK_ADDED, {
+
+  useSubscription(USER_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      const addedBook = subscriptionData.data.bookAdded
-      console.log(addedBook.title, 'added')
-      notify(`${addedBook.title} added`)
-      updateCacheWith(addedBook)
+      const addedUser = subscriptionData.data.userAdded
+      console.log(addedUser.name, 'addedSubscription')
+      notify(`${addedUser.name} added`)
+      updateCacheWith(addedUser)
     }
   })
-  */
+  
 
  if (allUsers.loading)  {
   return <div>loading...</div>
