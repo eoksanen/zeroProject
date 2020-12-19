@@ -1,16 +1,20 @@
 import React, { useState } from 'react'
 import LoginForm from './components/LoginForm'
-import { useQuery, useApolloClient, useSubscription, updateCacheWith } from '@apollo/client'
+import { useQuery, useLazyQuery, useApolloClient, useSubscription, updateCacheWith } from '@apollo/client'
 import Notify from './components/Notify'
 import Users from './components/Users'
 import UserForm from './components/UserForm'
 import { ALL_USERS } from './queries/query'
 import { USER_ADDED } from './queries/subscription'
+import {
+  BrowserRouter as Router,
+  Switch, Route, Link
+} from "react-router-dom"
 
 import './App.css';
 
 function App() {
-  const [page, setPage] = useState('welcome')
+  //const [page, setPage] = useState('welcome')
   const [token, setToken] = useState(localStorage.getItem('zero-user-token') ? localStorage.getItem('zero-user-token') : null)
   const [errorMessage, setErrorMessage] = useState(null)
   const[ user, setUser ] = useState(null)
@@ -18,6 +22,7 @@ function App() {
   const client = useApolloClient()
 
   const allUsers = useQuery(ALL_USERS)
+
 
   console.log('all Users ',allUsers)
 
@@ -48,39 +53,65 @@ function App() {
   return <div>loading...</div>
 }
 
+const padding = {
+  padding: 5
+}
+
   return (
     <div className="App">
 
+
+<table className='menu'>
+        <tbody>
+          <tr>
+            <td><Link style={padding} to="/">Home</Link></td>
+            <td><Link style={padding} to="/users">users</Link></td>
+            <td><Link style={padding} to="/addUser">adduser</Link></td>
+            <td>      
+              {token === null ?
+              <Link style={padding} to="/login">login</Link> :  <p style={padding}>{user} logged in</p>}
+            </td>
+            <td> 
+            {token === null ? null :
+              <button onClick={() => logout()}>logout</button>}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
       <div>
       <Notify errorMessage={errorMessage} />
-        <button onClick={() => setPage('users')}>users</button>
-        {token ? <button onClick={() => setPage('addUser')}>add User</button> 
-        : null }
-        {!token ? <button onClick={() => setPage('login')}>login</button> 
-        : <button onClick={() => logout()}>logout</button>}</div>
+  </div>
 
+
+    <Switch>
+      <Route path="/users">
       <Users
-        show={page === 'users'}
+        show={true}
         users = {allUsers.data}
       />
-
-
-
+      </Route>
+      <Route path="/addUser">
       <UserForm
-        show={page === 'addUser'}
+        show={true}
         setError={notify}
-        token={token}
-        
+        token={token}     
       />
 
+      </Route>
+      <Route path="/login">
       <LoginForm
-        show={page === 'login' && !token}
         setError={notify}
-        setToken={setToken}
-        setPage={setPage}
         setUser={setUser}
-        
+        setToken={setToken}
+        token={token}     
       />
+
+      </Route>
+      <Route path="/">
+      
+      </Route>
+    </Switch>
 
 
     </div>

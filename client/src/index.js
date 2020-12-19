@@ -8,6 +8,7 @@ import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache, split } from '@a
 
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('zero-user-token')
@@ -47,7 +48,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <App />
+      <Router>
+        <App />
+        </Router>
     </ApolloProvider>, 
   </React.StrictMode>,
   document.getElementById('root')

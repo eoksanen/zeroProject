@@ -3,7 +3,7 @@ import { useMutation, useLazyQuery, useQuery } from '@apollo/client'
 import { ME } from '../queries/query'
 import { LOGIN } from '../queries/mutation'
 
-const LoginForm = ({ setError, setToken, setUser, show, setPage }) => {
+const LoginForm = ({ setError, setToken, setUser, token, setPage }) => {
 
   const [getMe, meResult] = useLazyQuery(ME)
 
@@ -26,8 +26,9 @@ const LoginForm = ({ setError, setToken, setUser, show, setPage }) => {
       const token = result.data.login.value
       setToken(token)
      // window.location.reload(true)
+     const usr = getMe()
       console.log('ME', getMe() )
-      
+      setUser(usr)
       
       localStorage.setItem('zero-user-token', token)
       // setPage('recommendations')
@@ -47,7 +48,7 @@ const LoginForm = ({ setError, setToken, setUser, show, setPage }) => {
 
     login({ variables: { username, password } })
   }
-  if (!show) {
+  if (token) {
     return null
   }
 

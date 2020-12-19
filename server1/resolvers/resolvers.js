@@ -79,8 +79,7 @@ Subscription: {
     userAdded: {
       subscribe: () => pubsub.asyncIterator(['USER_ADDED'])
     }
-}
-
+  }
 }
 
 module.exports = resolvers
