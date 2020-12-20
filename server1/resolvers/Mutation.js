@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
-const { AuthenticationError, PubSub } = require('apollo-server')
+const { AuthenticationError, ForbiddenError, PubSub } = require('apollo-server')
 
 const pubsub = new PubSub()
 
@@ -40,6 +40,27 @@ const Mutation = {
         pubsub.publish('USER_ADDED', { userAdded: user })
         return user
   
+      },
+      removeUser: async (root, args, {currentUser} ) => {
+        console.log('args ',args,)
+
+        if (!currentUser) {
+          throw new AuthenticationError("not authenticated")
+        }
+        console.log('user', currentUser)
+
+        const user = await User.findById(args.id)
+
+        if(user.id) {
+
+        await User.findByIdAndRemove(args.id)
+
+        return user
+        } else {
+          throw new ForbiddenError("User not exist")
+        }
+
+
       },
       login: async ( root, args ) => {
         console.log('args ',args, '/n password')

@@ -26,6 +26,22 @@ fragment UserDetails on User {
   }
 `
 
+export const DELETE_USER = gql`
+mutation removeUser($id: String!) {
+  removeUser (id: $id) {
+    id
+  }
+}
+`
+
+export const TEST = gql`
+  mutation test($test: String!) {
+    test(test: $test)  {
+      test
+    }
+  }
+`
+
 export const EDIT_BORN = gql`
   mutation editBorn($name: String!, $setBornTo: Int!) {
     editAuthor(name: $name, setBornTo: $setBornTo)  {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import LoginForm from './components/LoginForm'
-import { useQuery, useLazyQuery, useApolloClient, useSubscription, updateCacheWith } from '@apollo/client'
+import { useQuery, useApolloClient, useSubscription, updateCacheWith } from '@apollo/client'
 import Notify from './components/Notify'
 import Users from './components/Users'
 import UserForm from './components/UserForm'
@@ -89,6 +89,7 @@ const padding = {
       <Users
         show={true}
         users = {allUsers.data}
+        setError = {setErrorMessage}
       />
       </Route>
       <Route path="/addUser">
