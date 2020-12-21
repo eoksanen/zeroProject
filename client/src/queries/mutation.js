@@ -19,9 +19,9 @@ mutation createUser($username: String!, $name: String!, $password: String! ) {
 }
 
 fragment UserDetails on User {
+        id
         username
         name
-        passwordHash
 
   }
 `
@@ -30,6 +30,8 @@ export const DELETE_USER = gql`
 mutation removeUser($id: String!) {
   removeUser (id: $id) {
     id
+    name
+    username
   }
 }
 `

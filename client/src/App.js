@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import LoginForm from './components/LoginForm'
-import { useQuery, useApolloClient, useSubscription, updateCacheWith } from '@apollo/client'
+import { useQuery, useApolloClient, useSubscription } from '@apollo/client'
 import Notify from './components/Notify'
 import Users from './components/Users'
 import UserForm from './components/UserForm'
@@ -23,6 +23,22 @@ function App() {
 
   const allUsers = useQuery(ALL_USERS)
 
+  const updateCacheWith = (addedUser) => {
+    const includedIn = (set, object) => 
+      set.map(p => p.id).includes(object.id)  
+
+    const dataInStore = client.readQuery({ query: ALL_USERS })
+    console.log('Cache already updated ',includedIn(dataInStore.allUsers, addedUser))
+    /*
+    if (!includedIn(dataInStore.allUsers, addedUser)) {
+      client.writeQuery({
+        query: ALL_USERS,
+        data: { allUsers : dataInStore.allUsers.concat(addedUser) }
+      })
+      
+    } */  
+  }
+
 
   console.log('all Users ',allUsers)
 
@@ -41,13 +57,15 @@ function App() {
 
   useSubscription(USER_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
+      console.log('subscriptionData ',subscriptionData.data.userAdded)
+
       const addedUser = subscriptionData.data.userAdded
-      console.log(addedUser.name, 'addedSubscription')
-      notify(`${addedUser.name} added`)
+      //console.log(addedUser.name, 'addedSubscription')
+      //notify(`${addedUser.name} added`)
       updateCacheWith(addedUser)
     }
   })
-  
+
 
  if (allUsers.loading)  {
   return <div>loading...</div>
@@ -96,7 +114,8 @@ const padding = {
       <UserForm
         show={true}
         setError={notify}
-        token={token}     
+        token={token}    
+        updateCacheWith={updateCacheWith} 
       />
 
       </Route>

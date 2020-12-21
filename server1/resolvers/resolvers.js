@@ -54,6 +54,27 @@ Mutation: {
         return user
   
       },
+      removeUser: async (root, args, {currentUser} ) => {
+        console.log('args ',args,)
+
+        if (!currentUser) {
+          throw new AuthenticationError("not authenticated")
+        }
+        console.log('user', currentUser)
+
+        const user = await User.findById(args.id)
+
+        if(user.id) {
+
+        await User.findByIdAndRemove(args.id)
+
+        return user
+        } else {
+          throw new ForbiddenError("User not exist")
+        }
+
+
+      },
       login: async ( root, args ) => {
         console.log('args ',args, '/n password')
         const user = await User.findOne({ username: args.username})

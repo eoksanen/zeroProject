@@ -9,8 +9,8 @@ export const USER_ADDED = gql`
   
   
   fragment UserDetails on User {
+        id
         username
         name
-        passwordHash
   }
 `

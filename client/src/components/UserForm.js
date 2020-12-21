@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { useLazyQuery } from '@apollo/client'
+import { ALL_USERS } from '../queries/query'
 import { CREATE_USER } from '../queries/mutation'
 import Notify from './Notify'
 
@@ -15,21 +16,23 @@ const UserForm = (props) => {
     onError: (error) => {
         props.setError(error.graphQLErrors[0] ? error.graphQLErrors[0].message : null)
     },
-    
-    update: (store, response) => {
-      props.updateCacheWith(response.data.addBook)
-    },
     /*
     update: (store, response) => {
-      const dataInStore = store.readQuery({ query: ALL_BOOKS })
+      console.log('response mutation createUser ',response.data.createUser)
+      props.updateCacheWith(response.data.createUser)
+    },
+    */
+    
+    update: (store, response) => {
+      const dataInStore = store.readQuery({ query: ALL_USERS })
       store.writeQuery({
-        query: ALL_BOOKS,
+        query: ALL_USERS,
         data: {
           ...dataInStore,
-          allBooks: [ ...dataInStore.allBooks, response.data.addBook ]
+          allUsers: [ ...dataInStore.allUsers, response.data.createUser ]
         }
       })
-    }*/
+    }
   })
 
 

@@ -1,15 +1,37 @@
-import React from 'react'
+import React , {useEffect} from 'react'
 import {useMutation} from '@apollo/client'
+import { ALL_USERS } from '../queries/query'
 import { DELETE_USER, LOGIN, TEST, CREATE_USER } from '../queries/mutation'
 
 const Users = ({users, setError}) => {
 
-    const [removeUser] = useMutation(DELETE_USER, {
+
+    const [removeUser, userId] = useMutation(DELETE_USER, {
         //refetchQueries: [{query: ME}],
         onError: (error) => {
           setError(error.graphQLErrors[0].message)
+        },
+        update: (store, response) => {
+          const dataInStore = store.readQuery({ query: ALL_USERS })
+          const updatedUserListAfterRemove = dataInStore.allUsers.map(user => user.id !== userId.id)
+          console.log('datainStore: ',dataInStore)
+            store.writeQuery({
+            query: ALL_USERS,
+            data: {
+              ...dataInStore,
+              allUsers: [ ...updatedUserListAfterRemove ]
+            }
+          })
         }
     })
+
+    useEffect(() => {
+      if ( userId.data ) {
+  
+        console.log('removed user id from server: ',userId)
+        
+      }
+    }, [userId.data]) // eslint-disable-line
 
     const [ createUser ] = useMutation(CREATE_USER, {
         // refetchQueries: [ { query: ALL_USERS } ],
@@ -59,6 +81,7 @@ const Users = ({users, setError}) => {
        removeUser({ variables: {id}})
         
         console.log('removed user id: ',id)
+        
         
 
     }
