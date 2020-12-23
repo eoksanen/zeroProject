@@ -5,7 +5,7 @@ import Notify from './components/Notify'
 import Users from './components/Users'
 import UserForm from './components/UserForm'
 import { ALL_USERS } from './queries/query'
-import { USER_ADDED } from './queries/subscription'
+import { USER_ADDED, USER_REMOVED } from './queries/subscription'
 import {
   BrowserRouter as Router,
   Switch, Route, Link
@@ -24,6 +24,7 @@ function App() {
   const allUsers = useQuery(ALL_USERS)
 
   const updateCacheWith = (addedUser) => {
+    console.log('addedUser ',addedUser)
     const includedIn = (set, object) => 
       set.map(p => p.id).includes(object.id)  
 
@@ -39,6 +40,26 @@ function App() {
     } */  
   }
 
+  const updateCacheWithR = (removedUser) => {
+    console.log('removedUser ',removedUser)
+/*
+    const includedIn = (set, object) => 
+      set.map(p => p.id).includes(object.id)  
+
+    const dataInStore = client.readQuery({ query: ALL_USERS })
+    console.log('redQuery ALL_USERS: ',dataInStore)
+    console.log('Cache already updated ',includedIn(dataInStore.allUsers, removedUser))
+    if (includedIn(dataInStore.allUsers, removedUser)) {
+*/  const dataInStore = client.readQuery({ query: ALL_USERS })
+      const updatedUserListAfterRemove = dataInStore.allUsers.map(user => user.id !== removedUser.id)
+      client.writeQuery({
+        query: ALL_USERS,
+        ...dataInStore,
+        data: { allUsers: [ ...updatedUserListAfterRemove ] }
+      })
+      
+  //  } 
+  }
 
   console.log('all Users ',allUsers)
 
@@ -63,6 +84,17 @@ function App() {
       //console.log(addedUser.name, 'addedSubscription')
       //notify(`${addedUser.name} added`)
       updateCacheWith(addedUser)
+    }
+  })
+
+  useSubscription(USER_REMOVED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      console.log('subscriptionData ',subscriptionData.data.userRemoved)
+
+      const removedUser = subscriptionData.data.userRemoved
+      //console.log(addedUser.name, 'addedSubscription')
+      //notify(`${addedUser.name} added`)
+      updateCacheWithR(removedUser)
     }
   })
 

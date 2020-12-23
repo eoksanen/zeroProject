@@ -29,5 +29,6 @@ type Mutation {
 }
 type Subscription {
     userAdded: User!
+    userRemoved: User!
   }
 

@@ -67,7 +67,7 @@ Mutation: {
         if(user.id) {
 
         await User.findByIdAndRemove(args.id)
-
+        pubsub.publish('USER_REMOVED', { userRemoved: user })
         return user
         } else {
           throw new ForbiddenError("User not exist")
@@ -99,6 +99,9 @@ Mutation: {
 Subscription: {
     userAdded: {
       subscribe: () => pubsub.asyncIterator(['USER_ADDED'])
+    },
+    userRemoved: {
+      subscribe: () => pubsub.asyncIterator(['USER_REMOVED'])
     }
   }
 }

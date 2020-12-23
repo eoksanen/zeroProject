@@ -9,20 +9,31 @@ const Users = ({users, setError}) => {
     const [removeUser, userId] = useMutation(DELETE_USER, {
         //refetchQueries: [{query: ME}],
         onError: (error) => {
-          setError(error.graphQLErrors[0].message)
+          console.log('ERRRROOOR', error)
+          setError(error.graphQLErrors[0] ? error.graphQLErrors[0].message : null)
         },
         update: (store, response) => {
+
+/*
+          store.modify({
+            allUsers(list, { readField }) {
+              return list.filter(n => readField("id", n) !== userId.id);
+            },
+          });
+*/
+/*
           const dataInStore = store.readQuery({ query: ALL_USERS })
           const updatedUserListAfterRemove = dataInStore.allUsers.map(user => user.id !== userId.id)
           console.log('datainStore: ',dataInStore)
             store.writeQuery({
             query: ALL_USERS,
             data: {
-              ...dataInStore,
+             // ...dataInStore,
               allUsers: [ ...updatedUserListAfterRemove ]
             }
-          })
+          })*/
         }
+        
     })
 
     useEffect(() => {
@@ -56,28 +67,9 @@ const Users = ({users, setError}) => {
         }*/
       })
 
-    const [ login, result ] = useMutation(LOGIN, {
-        //refetchQueries: [{query: ME}],
-        onError: (error) => {
-          setError(error.graphQLErrors[0].message)
-        }
-      })
 
     const deleteUser = (id) => {
-        /*
-        const username = "bookeater"
-        const password = "lipton7"
 
-        login({ variables: { username, password } })
-        
-        */
-        /*
-       const username = 'testi kymppi'
-       const name = 'testi kymppi'
-       const password = 'testi kymppi'
-
-       createUser({ variables: { username,  name, password } })
-        */
        removeUser({ variables: {id}})
         
         console.log('removed user id: ',id)
