@@ -42,6 +42,24 @@ function App() {
 
   const updateCacheWithR = (removedUser) => {
     console.log('removedUser ',removedUser)
+
+
+
+    const idToRemove = removedUser.id;
+
+client.modify({
+  id: client.identify(removedUser),
+  fields: {
+    allUsers(existingUserRefs, { readField }) {
+      return existingUserRefs.filter(
+        userRef => idToRemove !== readField('id', userRef)
+      );
+    },
+  },
+});
+
+
+
 /*
     const includedIn = (set, object) => 
       set.map(p => p.id).includes(object.id)  
@@ -50,15 +68,22 @@ function App() {
     console.log('redQuery ALL_USERS: ',dataInStore)
     console.log('Cache already updated ',includedIn(dataInStore.allUsers, removedUser))
     if (includedIn(dataInStore.allUsers, removedUser)) {
-*/  const dataInStore = client.readQuery({ query: ALL_USERS })
+
+
+
+
+*/ 
+/*
+const dataInStore = client.readQuery({ query: ALL_USERS })
       const updatedUserListAfterRemove = dataInStore.allUsers.map(user => user.id !== removedUser.id)
+     console.log(dataInStore)
       client.writeQuery({
         query: ALL_USERS,
-        ...dataInStore,
+
         data: { allUsers: [ ...updatedUserListAfterRemove ] }
       })
       
-  //  } 
+  //  } */
   }
 
   console.log('all Users ',allUsers)
