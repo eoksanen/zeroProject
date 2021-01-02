@@ -23,9 +23,8 @@ const Users = ({users, setError}) => {
           
           console.log('id ', response.data.removeUser.id)
 
-/*
+
           store.modify({
-            id: store.identify(response.data.removeUser),
             fields: {
               allUsers(existingUserRefs, { readField }) {
                 console.log('existingUserRefs ',existingUserRefs)
@@ -36,9 +35,9 @@ const Users = ({users, setError}) => {
               },
             },
           });
-*/
 
 
+/*
           const removedId = store.identify(response.data.removeUser)
 
           console.log('removedIdFrom apollo cache: ',removedId)
@@ -63,7 +62,7 @@ const Users = ({users, setError}) => {
              // ...dataInStore,
               allUsers: [ ...updatedUserListAfterRemove ]
             }
-          })
+          })*/
 /*
           const id = response.data.removeUser.id
 
