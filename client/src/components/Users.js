@@ -23,7 +23,7 @@ const Users = ({users, setError}) => {
           
           console.log('id ', response.data.removeUser.id)
 
-
+/*
           store.modify({
             fields: {
               allUsers(existingUserRefs, { readField }) {
@@ -35,7 +35,7 @@ const Users = ({users, setError}) => {
               },
             },
           });
-
+*/
 
 /*
           const removedId = store.identify(response.data.removeUser)
@@ -63,7 +63,7 @@ const Users = ({users, setError}) => {
               allUsers: [ ...updatedUserListAfterRemove ]
             }
           })*/
-/*
+
           const id = response.data.removeUser.id
 
           store.modify({
@@ -71,7 +71,7 @@ const Users = ({users, setError}) => {
               return list.filter(n => readField("id", n) !== id);
             },
           });
-          */
+          
         }
         
     })

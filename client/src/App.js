@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import LoginForm from './components/LoginForm'
-import { useQuery, useApolloClient, useSubscription } from '@apollo/client'
+import { useQuery, useApolloClient, useSubscription, InMemoryCache  } from '@apollo/client'
 import Notify from './components/Notify'
 import Users from './components/Users'
 import UserForm from './components/UserForm'
@@ -21,6 +21,8 @@ function App() {
 
   const client = useApolloClient()
 
+  const cache = new InMemoryCache()
+
   const allUsers = useQuery(ALL_USERS)
 
   const updateCacheWith = (addedUser) => {
@@ -30,14 +32,14 @@ function App() {
 
     const dataInStore = client.readQuery({ query: ALL_USERS })
     console.log('Cache already updated ',includedIn(dataInStore.allUsers, addedUser))
-    /*
+    
     if (!includedIn(dataInStore.allUsers, addedUser)) {
       client.writeQuery({
         query: ALL_USERS,
         data: { allUsers : dataInStore.allUsers.concat(addedUser) }
       })
       
-    } */  
+    } 
     
   }
 
@@ -47,21 +49,22 @@ function App() {
 
 
     const idToRemove = removedUser.id;
-
+/*
 client.modify({
-  id: client.identify(removedUser),
+  // id: client.identify(removedUser),
   fields: {
     allUsers(existingUserRefs, { readField }) {
+      console.log('existingUserRefs ',existingUserRefs)
       return existingUserRefs.filter(
         userRef => idToRemove !== readField('id', userRef)
       );
     },
   },
 });
+*/
 
 
 
-/*
     const includedIn = (set, object) => 
       set.map(p => p.id).includes(object.id)  
 
@@ -73,18 +76,26 @@ client.modify({
 
 
 
-*/ 
+
 /*
 const dataInStore = client.readQuery({ query: ALL_USERS })
-      const updatedUserListAfterRemove = dataInStore.allUsers.map(user => user.id !== removedUser.id)
-     console.log(dataInStore)
+*/
+      const updatedUserListAfterRemove = dataInStore.allUsers.filter(user => user.id !== removedUser.id)
+      console.log('updatedUserListAfterRemove ',updatedUserListAfterRemove)
+      cache.evict({
+        // Often cache.evict will take an options.id property, but that's not necessary
+        // when evicting from the ROOT_QUERY object, as we're doing here.
+        fieldName: "allUsers",
+        // No need to trigger a broadcast here, since writeQuery will take care of that.
+        broadcast: false,
+      });
       client.writeQuery({
         query: ALL_USERS,
 
         data: { allUsers: [ ...updatedUserListAfterRemove ] }
       })
       
-  //  } */
+    } 
   }
 
   console.log('all Users ',allUsers)
@@ -109,7 +120,7 @@ const dataInStore = client.readQuery({ query: ALL_USERS })
       const addedUser = subscriptionData.data.userAdded
       //console.log(addedUser.name, 'addedSubscription')
       //notify(`${addedUser.name} added`)
-      //updateCacheWith(addedUser)
+      updateCacheWith(addedUser)
     }
   })
 
@@ -120,7 +131,7 @@ const dataInStore = client.readQuery({ query: ALL_USERS })
       const removedUser = subscriptionData.data.userRemoved
       //console.log(addedUser.name, 'addedSubscription')
       //notify(`${addedUser.name} added`)
-   //   updateCacheWithR(removedUser)
+      updateCacheWithR(removedUser)
     }
   })
 
