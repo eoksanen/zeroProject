@@ -38,6 +38,7 @@ function App() {
       })
       
     } */  
+    
   }
 
   const updateCacheWithR = (removedUser) => {
@@ -108,7 +109,7 @@ const dataInStore = client.readQuery({ query: ALL_USERS })
       const addedUser = subscriptionData.data.userAdded
       //console.log(addedUser.name, 'addedSubscription')
       //notify(`${addedUser.name} added`)
-      updateCacheWith(addedUser)
+      //updateCacheWith(addedUser)
     }
   })
 
@@ -119,7 +120,7 @@ const dataInStore = client.readQuery({ query: ALL_USERS })
       const removedUser = subscriptionData.data.userRemoved
       //console.log(addedUser.name, 'addedSubscription')
       //notify(`${addedUser.name} added`)
-      updateCacheWithR(removedUser)
+   //   updateCacheWithR(removedUser)
     }
   })
 

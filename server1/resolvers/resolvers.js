@@ -15,7 +15,7 @@ Query: {
 
     },
     allUsers: async () => {
-      return await User.find({},{name:1, username:1})
+      return await User.find({},{id:1, name:1, username:1})
     }
 },
 

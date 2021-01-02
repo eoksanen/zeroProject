@@ -9,7 +9,7 @@ const User = require('./models/user')
 
 const saltRounds = 10
 
-const addUser = async (username, name,  password) => {
+const addUser = async (username, name,  password ) => {
 
 
     await mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
@@ -47,4 +47,11 @@ const addUser = async (username, name,  password) => {
     }
 }
 
-addUser("test","test","test")
+const numberOfAddedUsers = 100
+
+for (i = 0; i < numberOfAddedUsers; i++) {
+  addUser(`test${i}`,`test${i}`,`test${i}`)
+}
+
+
+
