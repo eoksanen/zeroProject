@@ -19,9 +19,11 @@ function App() {
   const [errorMessage, setErrorMessage] = useState(null)
   const[ user, setUser ] = useState(null)
 
-  const client = useApolloClient()
+  const client = useApolloClient({
+    cache: new InMemoryCache()
+  })
+   //const cache = new InMemoryCache()
 
-  const cache = new InMemoryCache()
 
   const allUsers = useQuery(ALL_USERS)
 
@@ -50,7 +52,7 @@ function App() {
 
     const idToRemove = removedUser.id;
 /*
-client.modify({
+cache.modify({
   // id: client.identify(removedUser),
   fields: {
     allUsers(existingUserRefs, { readField }) {
@@ -80,9 +82,10 @@ client.modify({
 /*
 const dataInStore = client.readQuery({ query: ALL_USERS })
 */
+
       const updatedUserListAfterRemove = dataInStore.allUsers.filter(user => user.id !== removedUser.id)
       console.log('updatedUserListAfterRemove ',updatedUserListAfterRemove)
-      cache.evict({
+      client.cache.evict({
         // Often cache.evict will take an options.id property, but that's not necessary
         // when evicting from the ROOT_QUERY object, as we're doing here.
         fieldName: "allUsers",
